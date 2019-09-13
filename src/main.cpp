@@ -33,7 +33,7 @@ float angular_vel_cmd = 0;
 float throttle = 0;
 float steering = 0;
 
-void motor_cmd_cb(const geometry_msgs::Vector3& msg){
+void motor_cmd_cb(const geometry_msgs::Vector3 &msg){
 
   throttle = msg.x;
   steering = msg.y;
@@ -50,11 +50,11 @@ const int m_13_spd = 12;
 const int m_24_spd = 14;
 const int m_24_dir = 27;
 
-const int m_4_encA = 15;
-const int m_4_encB = 2;
+const int m_4_encA = 36;
+const int m_4_encB = 32;
 
-const int m_3_encA = 4;
-const int m_3_encB = 16;
+const int m_3_encA = 26;
+const int m_3_encB = 25;
 
 int rpm_left =0;
 int rpm_right = 0;
@@ -86,10 +86,10 @@ unsigned int num_tooth_whl = 20;
 
 MotorControl DiffDriveMotors;
 
-static bool dir_mot3 = false;
-static bool dir_mot4 = false;
-static int count_mot3 = 0;
-static int count_mot4 = 0;
+volatile bool dir_mot3 = false;
+volatile bool dir_mot4 = false;
+volatile int count_mot3 = 0;
+volatile int count_mot4 = 0;
 
 static bool m3_sensA = false;
 static bool m3_sensB = false;
@@ -98,30 +98,32 @@ static bool m4_sensB = false;
 static bool interruptCheck = false;
 
 void IRAM_ATTR InterruptRoutine_m3(){
-  int val = digitalRead(m_3_encB);
+  /*int val = digitalRead(m_3_encB);
   if(val){
     dir_mot3 = true;
     count_mot3++;
   }else{
     dir_mot3 = false;
     count_mot3--;
-  }
+  }*/
   if(interruptCheck){
     interruptCheck = false;
   }else{
     interruptCheck = true;
   }
+  count_mot3++;
 }
 
 void IRAM_ATTR InterruptRoutine_m4(){
-  int val = digitalRead(m_4_encB);
+  /*int val = digitalRead(m_4_encB);
   if(val){
     dir_mot4 = true;
     count_mot4--;
   }else{
     dir_mot4 = false;
     count_mot4++;
-  }
+  }*/
+  count_mot4++;
 }
 
 void setup(){
@@ -167,8 +169,8 @@ void setup(){
   pinMode(m_3_encA,INPUT_PULLUP);
   pinMode(m_3_encB,INPUT);
 
-  attachInterrupt(digitalPinToInterrupt(m_3_encA),InterruptRoutine_m3,RISING);
-  attachInterrupt(digitalPinToInterrupt(m_4_encA),InterruptRoutine_m4,RISING);
+  attachInterrupt(m_3_encA,InterruptRoutine_m3,RISING);
+  attachInterrupt(m_4_encA,InterruptRoutine_m4,RISING);
   dir_mot3 = true;
   dir_mot4 = true;
 
@@ -214,7 +216,16 @@ void loop(/* arguments */) {
 
   }else{
     DiffDriveMotors.stopMotors();
+    Serial.print("\n Left Motor Speed: \t");
+    Serial.println(count_mot3);
+    Serial.print("\n Right Motor Speed: \t");
+    Serial.println(count_mot4);
   }
 
+
+  //detachInterrupt(m_3_encA);
+  //detachInterrupt(m_4_encA);
   nh.spinOnce();
+  //attachInterrupt(m_3_encA,InterruptRoutine_m3,RISING);
+  //attachInterrupt(m_4_encA,InterruptRoutine_m4,RISING);
 }

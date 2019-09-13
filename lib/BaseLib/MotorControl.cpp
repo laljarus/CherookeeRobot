@@ -64,7 +64,7 @@ float motor_spd_right;
 unsigned char left_spd,right_spd;
 bool robot_dir;
 
-if(linear_vel_cmd>0){
+if(linear_vel_cmd>=0){
   motor_spd_left = linear_vel_cmd;
   motor_spd_right = linear_vel_cmd;
   robot_dir = false;
@@ -94,6 +94,11 @@ if(motor_spd_right > 1){
 
 left_spd = static_cast<unsigned char>(motor_spd_left*255);
 right_spd = static_cast<unsigned char>(motor_spd_right*255);
+
+/*Serial.print("\n Left Motor Command: \t");
+Serial.print(right_spd);
+Serial.print("\n Right Motor Command: \t");
+Serial.print(left_spd);*/
 
 setMotorA(right_spd,robot_dir);
 setMotorB(left_spd,robot_dir);
