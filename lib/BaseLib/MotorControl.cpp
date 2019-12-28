@@ -21,14 +21,16 @@ void MotorControl::Init(const int m_13_spd_in, const int m_24_spd_in,const int m
               // Set all the motor control pins to outputs
               ledcSetup(led_channel_0, led_freq, led_timer_precision);
               ledcAttachPin(m_13_spd, led_channel_0);
+              ledcWrite(led_channel_0, 0);
 
               ledcSetup(led_channel_1, led_freq, led_timer_precision);
               ledcAttachPin(m_24_spd, led_channel_1);
+              ledcWrite(led_channel_1, 0);
 
               pinMode(m_13_dir,OUTPUT);
+              digitalWrite(m_13_dir, 0);
               pinMode(m_24_dir,OUTPUT);
-
-
+              digitalWrite(m_24_dir, 0);
 }
 
 void MotorControl::setMotorA(int speed,bool dir){

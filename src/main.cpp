@@ -20,7 +20,7 @@
 const char* ssid     = "KabelBox-A1B0";
 const char* password = "79191001549332230052";
 // Set the rosserial socket server IP address
-IPAddress server(192,168,0,7);
+IPAddress server(192,168,0,3);
 // Set the rosserial socket server port
 const uint16_t serverPort = 11411;
 
