@@ -8,7 +8,7 @@
 
 // I2Cdev and MPU6050 must be installed as libraries, or else the .cpp/.h files
 // for both classes must be in the include path of your project
-#include "I2Cdev.h"
+/*#include "I2Cdev.h"
 #include "MPU6050.h"
 
 // Arduino Wire library is required if I2Cdev I2CDEV_ARDUINO_WIRE implementation
@@ -16,11 +16,12 @@
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
     #include "Wire.h"
 #endif
+*/
 
-const char* ssid     = "KabelBox-A1B0";
-const char* password = "79191001549332230052";
+const char *ssid = "KeyHouse";
+const char *password = "PM24_m19_ac68u";
 // Set the rosserial socket server IP address
-IPAddress server(192,168,0,3);
+IPAddress server(192,168,1,37);
 // Set the rosserial socket server port
 const uint16_t serverPort = 11411;
 
